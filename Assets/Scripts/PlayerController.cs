@@ -1,33 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
 
     public float mouseSensitivity = 100f;
+    public float rotateSpeed, speed, sprintSpeed;
+
     public Animator anim;
+    public GameObject cam, Paco, cabezaDePaco;
+
     private float xRotation = 0f;
-
-    public GameObject Paco, cabezaDePaco;
-    public float rotateSpeed;
-
-    public float speed;
-    public float sprintSpeed;
     private Rigidbody rb;
-    Vector2 inputMov;
-    Vector2 mouseMov;
+    private Vector2 inputMov, mouseMov;
     private bool isRunning;
-    private bool isJumping;
-    public GameObject cam;
 
     private void Awake()
     {
+        //isJumping = false;
         isRunning = false;
         inputMov = new Vector2();
         mouseMov = new Vector2();
         rb = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
@@ -47,23 +44,17 @@ public class PlayerController : MonoBehaviour
         inputMov.x = Input.GetAxisRaw("Horizontal");
         inputMov.y = Input.GetAxisRaw("Vertical");
 
-        mouseMov.x = Input.GetAxis("Mouse X") * mouseSensitivity;
-        mouseMov.y = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        GetMouseInput();
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
             isRunning = true;
         }
+
         else
         {
             isRunning = false;
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isJumping = true;
-        }
-
     }
 
     public void Move()
@@ -111,11 +102,35 @@ public class PlayerController : MonoBehaviour
         }
 
         anim.SetBool("isRunning", isRunning);
-
     }
+
+
     public void MoveCam()
     {
-        cam.transform.RotateAround( cabezaDePaco.transform.position, transform.right, -1 *mouseMov.y * Time.deltaTime);
+        cam.transform.RotateAround(cabezaDePaco.transform.position, transform.right, -1 * mouseMov.y * Time.deltaTime);
+    }
+
+    private void GetMouseInput()
+    {
+        mouseMov.x = 0;
+        mouseMov.y = 0;
+        if (Input.GetMouseButton(1))
+        {
+            mouseMov.x = Input.GetAxis("Mouse X") * mouseSensitivity;
+            mouseMov.y = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        }
+
+        float eulerX = cam.transform.localEulerAngles.x;
+
+        if (eulerX > 60 && eulerX < 90 && mouseMov.y < 0)
+        {
+            mouseMov.y = 0;
+        }
+
+        if (eulerX < 340 && eulerX > 300 && mouseMov.y > 0)
+        {
+            mouseMov.y = 0;
+        }
     }
 
 }

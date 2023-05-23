@@ -1584,6 +1584,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4303191820934111280, guid: 85f9104b3d4db434695942d544203309,
         type: 3}
+      propertyPath: jumpTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303191820934111280, guid: 85f9104b3d4db434695942d544203309,
+        type: 3}
+      propertyPath: JumpForce
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4303191820934111280, guid: 85f9104b3d4db434695942d544203309,
+        type: 3}
       propertyPath: rotateSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -1611,6 +1621,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Drag
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4434889088194934475, guid: 85f9104b3d4db434695942d544203309,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4762792147801326650, guid: 85f9104b3d4db434695942d544203309,
         type: 3}
