@@ -30,6 +30,9 @@ public class Video360 : MonoBehaviour
         map.SetActive(false);
         vd360.SetActive(true);
         vd.Play();
+        PlayerController plct = other.gameObject.GetComponent<PlayerController>();
+        plct.limitView = false;
+        plct.Paco.SetActive(false);
     }
 
     private void OnTriggerExit(Collider other)
@@ -38,6 +41,9 @@ public class Video360 : MonoBehaviour
         map.SetActive(true);
         vd360.SetActive(false);
         vd.Stop();
+        PlayerController plct = other.gameObject.GetComponent<PlayerController>();
+        plct.limitView = true;
+        plct.Paco.SetActive(true);
     }
     
     private void controlVideo()

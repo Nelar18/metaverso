@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 
     public float mouseSensitivity = 100f;
     public float rotateSpeed, speed, sprintSpeed;
+    [HideInInspector] public bool limitView;
 
     public Animator anim;
     public GameObject cam, Paco, cabezaDePaco;
@@ -19,12 +20,11 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        //isJumping = false;
+        limitView = true;
         isRunning = false;
         inputMov = new Vector2();
         mouseMov = new Vector2();
         rb = GetComponent<Rigidbody>();
-        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
@@ -85,7 +85,6 @@ public class PlayerController : MonoBehaviour
         xRotation -= mouseMov.y * Time.deltaTime;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        //transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseMov.x * Time.deltaTime);
     }
 
@@ -116,18 +115,40 @@ public class PlayerController : MonoBehaviour
         mouseMov.y = 0;
         if (Input.GetMouseButton(1))
         {
+            Cursor.visible = false;
             mouseMov.x = Input.GetAxis("Mouse X") * mouseSensitivity;
             mouseMov.y = Input.GetAxis("Mouse Y") * mouseSensitivity;
         }
+        else
+        {
+            Cursor.visible = true;
+        }
+
 
         float eulerX = cam.transform.localEulerAngles.x;
 
-        if (eulerX > 60 && eulerX < 90 && mouseMov.y < 0)
+        if (limitView)
+        {
+            LimitView(60, 20);
+        }
+        else
+        {
+            LimitView(80, 80);
+        }
+
+    }
+
+    private void LimitView(float max, float min)
+    {
+        float eulerX = cam.transform.localEulerAngles.x;
+
+        if (eulerX > max && eulerX < max+30 && mouseMov.y < 0)
         {
             mouseMov.y = 0;
         }
 
-        if (eulerX < 340 && eulerX > 300 && mouseMov.y > 0)
+        min = 360 -min;
+        if (eulerX < min && eulerX > min-30 && mouseMov.y > 0)
         {
             mouseMov.y = 0;
         }
