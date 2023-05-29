@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     public Animator anim;
     public GameObject cam, Paco, cabezaDePaco;
+    public AudioSource StepSound, runSound;
 
     private float xRotation = 0f;
     private Rigidbody rb;
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         GetInput();
         Animate();
+        Sound();
     }
 
     private void FixedUpdate()
@@ -151,6 +153,23 @@ public class PlayerController : MonoBehaviour
         if (eulerX < min && eulerX > min-30 && mouseMov.y > 0)
         {
             mouseMov.y = 0;
+        }
+    }
+
+    public void Sound()
+    {
+        StepSound.mute = true;
+        runSound.mute = true;
+
+        if (inputMov.magnitude > 0.6f)
+        {
+            StepSound.mute = false;
+        }
+
+        if ( isRunning )
+        {
+            StepSound.mute = true;
+            runSound.mute = false;
         }
     }
 

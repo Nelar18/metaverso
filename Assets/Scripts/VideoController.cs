@@ -25,12 +25,14 @@ public class VideoController : MonoBehaviour
     {
         playerInside = true;
         vd.Play();
+        other.gameObject.GetComponent<AudioSource>().mute = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
         playerInside = false;
         vd.Stop();
+        other.gameObject.GetComponent<AudioSource>().mute = false;
     }
 
     private void controlVideo()

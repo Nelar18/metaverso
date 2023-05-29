@@ -56,7 +56,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8705823008164184545}
   m_Enabled: 1
-  m_VideoClip: {fileID: 0}
+  m_VideoClip: {fileID: 32900000, guid: d56cc10f84b95b54f9d53b7b8047131b, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -66,14 +66,14 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 3
   m_AspectRatio: 2
-  m_DataSource: 1
+  m_DataSource: 0
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 1
   m_TargetAudioSources:
   - {fileID: 8705823008164184550}
   m_DirectAudioVolumes:
   - 1
-  m_Url: https://vrestudio.com/storage/AppTurismo/videos360/PuenteAjuda/puenteAjudaCopia.m3u8
+  m_Url: file://C:/Users/VRE_Juan/Desktop/proyectos Unity/metaverso/Assets/Videos/catedral_hls_720p_0000.ts
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 8705823009662505616}
   - component: {fileID: 8705823009662505630}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Sphere1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -288,7 +288,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 3322c4efb064cdd4aa289e2f23902949, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

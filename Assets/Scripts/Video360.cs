@@ -33,6 +33,7 @@ public class Video360 : MonoBehaviour
         PlayerController plct = other.gameObject.GetComponent<PlayerController>();
         plct.limitView = false;
         plct.Paco.SetActive(false);
+        other.gameObject.GetComponent<AudioSource>().mute = true;
     }
 
     private void OnTriggerExit(Collider other)
@@ -44,6 +45,7 @@ public class Video360 : MonoBehaviour
         PlayerController plct = other.gameObject.GetComponent<PlayerController>();
         plct.limitView = true;
         plct.Paco.SetActive(true);
+        other.gameObject.GetComponent<AudioSource>().mute = false;
     }
     
     private void controlVideo()
