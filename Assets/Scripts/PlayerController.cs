@@ -14,18 +14,20 @@ public class PlayerController : MonoBehaviour
     public GameObject cam, Paco, cabezaDePaco;
     public AudioSource StepSound, runSound;
 
-    private float xRotation = 0f;
+
     private Rigidbody rb;
-    private Vector2 inputMov, mouseMov;
+    private CharacterController cc;
+    private Vector3 inputMov, mouseMov;
     private bool isRunning;
 
     private void Awake()
     {
         limitView = true;
-        isRunning = false;
-        inputMov = new Vector2();
-        mouseMov = new Vector2();
+        inputMov = Vector3.zero;
+        mouseMov = Vector3.zero;
+        //cc = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
+        
     }
 
     private void Update()
@@ -44,26 +46,42 @@ public class PlayerController : MonoBehaviour
     public void GetInput()
     {
         inputMov.x = Input.GetAxisRaw("Horizontal");
-        inputMov.y = Input.GetAxisRaw("Vertical");
+        inputMov.z = Input.GetAxisRaw("Vertical");
 
         GetMouseInput();
 
         if (Input.GetKey(KeyCode.LeftShift))
-        {
             isRunning = true;
-        }
-
         else
-        {
             isRunning = false;
-        }
     }
 
     public void Move()
     {
+        RotatePlayerModel();
+
+        Vector3 movDirAxis = new Vector3(1,0,1);
+        if (isRunning)
+        {
+            //cc.Move(Vector3.Scale(movDirNormalized, inputMov)*  Time.fixedDeltaTime * sprintSpeed);
+            rb.AddRelativeForce(Vector3.Scale(movDirAxis, inputMov) * sprintSpeed * Time.deltaTime);
+        }
+        else
+        {
+            //cc.Move(Vector3.Scale(movDirNormalized, inputMov) *  Time.fixedDeltaTime * speed);
+            rb.AddRelativeForce(Vector3.Scale(movDirAxis, inputMov) * speed * Time.deltaTime);
+        }
+
+        RotateFullPlayer();
+       
+    }
+
+
+    private void RotatePlayerModel()
+    {
         Vector3 posToLookAt = Vector3.zero;
         posToLookAt.x += inputMov.x;
-        posToLookAt.z += inputMov.y + 0.1f;
+        posToLookAt.z += inputMov.z + 0.1f;
         Vector3 currPosTr = transform.position;
         transform.Translate(posToLookAt);
         Vector3 relPosToLookAt = transform.position - currPosTr;
@@ -71,36 +89,21 @@ public class PlayerController : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(relPosToLookAt);
         Paco.transform.rotation = Quaternion.Slerp(Paco.transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+    }
 
-        if (isRunning)
-        {
-            rb.AddRelativeForce(Vector3.right * inputMov.x * sprintSpeed * Time.deltaTime);
-            rb.AddRelativeForce(Vector3.forward * inputMov.y * sprintSpeed * Time.deltaTime);
-        }
-        else
-        {
-            rb.AddRelativeForce(Vector3.right * inputMov.x * speed * Time.deltaTime);
-            rb.AddRelativeForce(Vector3.forward * inputMov.y * speed * Time.deltaTime);
-        }
-
-
-        xRotation -= mouseMov.y * Time.deltaTime;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
+    private void RotateFullPlayer()
+    {
         transform.Rotate(Vector3.up * mouseMov.x * Time.deltaTime);
     }
 
     public void Animate()
     {
+        Debug.Log(inputMov.magnitude);
         if (inputMov.magnitude > 0.6f)
-        {
             anim.SetBool("isWalking", true);
-        }
 
         if (inputMov.magnitude < 0.4f)
-        {
             anim.SetBool("isWalking", false);
-        }
 
         anim.SetBool("isRunning", isRunning);
     }
@@ -122,21 +125,15 @@ public class PlayerController : MonoBehaviour
             mouseMov.y = Input.GetAxis("Mouse Y") * mouseSensitivity;
         }
         else
-        {
             Cursor.visible = true;
-        }
 
 
         float eulerX = cam.transform.localEulerAngles.x;
 
         if (limitView)
-        {
             LimitView(60, 20);
-        }
         else
-        {
             LimitView(80, 80);
-        }
 
     }
 
@@ -145,15 +142,11 @@ public class PlayerController : MonoBehaviour
         float eulerX = cam.transform.localEulerAngles.x;
 
         if (eulerX > max && eulerX < max+30 && mouseMov.y < 0)
-        {
             mouseMov.y = 0;
-        }
 
         min = 360 -min;
         if (eulerX < min && eulerX > min-30 && mouseMov.y > 0)
-        {
             mouseMov.y = 0;
-        }
     }
 
     public void Sound()
@@ -162,15 +155,11 @@ public class PlayerController : MonoBehaviour
         runSound.mute = true;
 
         if (inputMov.magnitude > 0.6f)
-        {
             StepSound.mute = false;
-        }
 
         if ( isRunning )
-        {
             StepSound.mute = true;
             runSound.mute = false;
-        }
     }
 
 }
